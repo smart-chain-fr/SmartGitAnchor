@@ -84,6 +84,6 @@ assert(process.env.API_KEY, "Environment variable API_KEY is not set");
 Main.run({
 	callbackUrl: process.env.CALLBACK_URL,
 	secureApi: process.env.SECURE_API,
-	apiKey: process.env.API_KEY ?? "",
+	apiKey: process.env.API_KEY,
 	rootDir: process.env.FILES_PATH ?? "",
 });
