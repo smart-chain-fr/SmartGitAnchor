@@ -14,13 +14,13 @@ type IConfig = {
 class Main {
 	public static async run(configs: IConfig): Promise<void> {
 		try {
-			console.log("Response from API:", await this.requestAnchoring(configs, await this.hashFilesFromDir(configs.rootDir)));
+			console.log("Response from API:", await this.requestAnchoring(await this.createHashsFromDir(configs.rootDir), configs));
 		} catch (error) {
 			console.error("Error:", error);
 		}
 	}
 
-	private static async requestAnchoring(configs: IConfig, hashSources: string[]): Promise<unknown> {
+	private static async requestAnchoring(hashSources: string[], configs: IConfig): Promise<unknown> {
 		return (
 			await fetch(configs.secureApi, {
 				method: "POST",
@@ -46,7 +46,7 @@ class Main {
 		).json();
 	}
 
-	private static async hashFilesFromDir(dir: string): Promise<string[]> {
+	private static async createHashsFromDir(dir: string): Promise<string[]> {
 		const files = this.getFilesPath(dir).sort((a, b) => a.localeCompare(b));
 		return Promise.all(files.map((file) => this.hashFile(file)));
 	}
