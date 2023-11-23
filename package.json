@@ -1,5 +1,5 @@
 {
-  "name": "filehashdispatcher",
+  "name": "@smart-chain-fr/filehashdispatcher",
   "version": "1.0.0",
   "description": "FileHashDispatcher is a versatile Node.js package designed for computing and securely transmitting file hashes.",
   "main": "index.js",
