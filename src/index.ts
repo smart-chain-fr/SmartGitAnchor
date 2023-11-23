@@ -2,84 +2,88 @@ import * as fs from "fs";
 import * as crypto from "crypto";
 import fetch from "node-fetch";
 import * as path from "path";
+import assert from "assert";
 
-async function computeHash(filePath: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const hash = crypto.createHash("sha256");
-    const stream = fs.createReadStream(filePath);
+type IConfig = {
+	callbackUrl: string | undefined;
+	secureApi: string;
+	apiKey: string;
+	rootDir: string;
+};
 
-    stream.on("data", (data) => hash.update(data));
-    stream.on("end", () => resolve(hash.digest("hex")));
-    stream.on("error", (err) => reject(err));
-  });
+class Main {
+	public static async run(configs: IConfig): Promise<void> {
+		try {
+			console.log("Response from API:", await this.requestAnchoring(configs, await this.hashFilesFromDir(configs.rootDir)));
+		} catch (error) {
+			console.error("Error:", error);
+		}
+	}
+
+	private static async requestAnchoring(configs: IConfig, hashSources: string[]): Promise<unknown> {
+		return (
+			await fetch(configs.secureApi, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					apiKey: `${configs.apiKey}`,
+				},
+				body: JSON.stringify({
+					hash_sources: hashSources,
+					...(configs.callbackUrl && {
+						callback_url: configs.callbackUrl,
+						callback_config: {
+							queued: true,
+							attempting: true,
+							verifying: true,
+							verified: true,
+							abandoned: true,
+							nb_try: 3,
+						},
+					}),
+				}),
+			})
+		).json();
+	}
+
+	private static async hashFilesFromDir(dir: string): Promise<string[]> {
+		const files = this.getFilesPath(dir).sort((a, b) => a.localeCompare(b));
+		return Promise.all(files.map((file) => this.hashFile(file)));
+	}
+
+	private static async hashFile(filePath: string): Promise<string> {
+		return new Promise((resolve, reject) => {
+			const hash = crypto.createHash("sha256");
+			const stream = fs.createReadStream(filePath);
+
+			stream.on("data", (data) => hash.update(data));
+			stream.on("end", () => resolve(hash.digest("hex")));
+			stream.on("error", (err) => reject(err));
+		});
+	}
+
+	private static getFilesPath(dir: string): string[] {
+		let files: string[] = [];
+		const fileContent = fs.readdirSync(dir);
+		for (const file of fileContent) {
+			const fullPath = path.resolve(dir, file);
+			if (fs.statSync(fullPath).isDirectory()) {
+				files = files.concat(this.getFilesPath(fullPath));
+			} else {
+				files.push(fullPath);
+			}
+		}
+
+		return files;
+	}
 }
 
-function getFilesPath(dir: string): string[] {
-  let files: string[] = [];
-  const fileContent = fs.readdirSync(dir);
-  for (const file of fileContent) {
-    const fullPath = path.resolve(dir, file);
-    if (fs.statSync(fullPath).isDirectory()) {
-      files = files.concat(getFilesPath(fullPath));
-    } else {
-      files.push(fullPath);
-    }
-  }
+assert(process.env.SECURE_API, "Environment variable SECURE_API is not set");
+assert(process.env.API_KEY, "Environment variable API_KEY is not set");
 
-  return files;
-}
-
-async function main() {
-  const callbackUrl = process.env.CALLBACK_URL;
-  const secureApi = process.env.SECURE_API;
-  const apiKey = process.env.API_KEY;
-  const filesPath = process.env.FILES_PATH;
-
-  if (!secureApi || !apiKey || !filesPath) {
-    console.error(
-      "Environment variables FILES_PATH, SECURE_API or API_KEY are not set"
-    );
-    return;
-  }
-
-  try {
-    const files = getFilesPath(filesPath).sort((a, b) => a.localeCompare(b));
-    const hashes = await Promise.all(files.map((file) => computeHash(file)));
-    let jsonPayload = {};
-
-    if (callbackUrl) {
-      jsonPayload = {
-        hash_sources: hashes,
-        callback_url: callbackUrl,
-        callback_config: {
-          queued: true,
-          attempting: true,
-          verifying: true,
-          verified: true,
-          abandoned: true,
-          nb_try: 3,
-        },
-      };
-    } else {
-      jsonPayload = {
-        hash_sources: hashes,
-      };
-    }
-
-    const response = await fetch(secureApi, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apiKey: `${apiKey}`,
-      },
-      body: JSON.stringify(jsonPayload),
-    });
-
-    const responseData = await response.json();
-    console.log("Response from API:", responseData);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-main();
+Main.run({
+	callbackUrl: process.env.CALLBACK_URL,
+	secureApi: process.env.SECURE_API,
+	apiKey: process.env.API_KEY ?? "",
+	rootDir: process.env.FILES_PATH ?? "",
+});
