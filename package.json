@@ -1,0 +1,32 @@
+{
+  "name": "filehashdispatcher",
+  "version": "1.0.0",
+  "description": "FileHashDispatcher is a versatile Node.js package designed for computing and securely transmitting file hashes.",
+  "main": "index.js",
+  "type": "module",
+  "outdir": "./dist",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smart-chain-fr/FileHashDispatcher.git"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": "Team smart-chain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smart-chain-fr/FileHashDispatcher/issues"
+  },
+  "homepage": "https://github.com/smart-chain-fr/FileHashDispatcher#readme",
+  "devDependencies": {
+    "@types/node": "^20.9.4"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}
