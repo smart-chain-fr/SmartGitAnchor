@@ -63,12 +63,12 @@ class Main {
 	}
 
 	private static getFilesPath(dir: string): string[] {
-		let files: string[] = [];
+		const files: string[] = [];
 		const fileContent = fs.readdirSync(dir);
 		for (const file of fileContent) {
 			const fullPath = path.resolve(dir, file);
 			if (fs.statSync(fullPath).isDirectory()) {
-				files = files.concat(this.getFilesPath(fullPath));
+				files.push(...this.getFilesPath(fullPath));
 			} else {
 				files.push(fullPath);
 			}
