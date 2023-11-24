@@ -85,5 +85,5 @@ Main.run({
 	callbackUrl: process.env.CALLBACK_URL,
 	secureApi: process.env.SECURE_API,
 	apiKey: process.env.API_KEY,
-	rootDir: process.env.FILES_PATH ?? "",
+	rootDir: process.env.FILES_PATH ?? "./",
 });
