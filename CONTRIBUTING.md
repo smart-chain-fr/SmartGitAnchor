@@ -1,4 +1,4 @@
-# Contributing to AsyncBatch
+# Contributing to FileHashDispatcher
 
 Welcome to our open-source project! We appreciate your interest and contributions.
 

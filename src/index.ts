@@ -3,6 +3,7 @@ import * as crypto from "crypto";
 import fetch from "node-fetch";
 import * as path from "path";
 import assert from "assert";
+import { AsyncBatch } from "@smart-chain-fr/asyncbatch";
 
 type IConfig = {
 	callbackUrl: string | undefined;
@@ -46,9 +47,34 @@ class Main {
 		).json();
 	}
 
-	private static async createHashsFromDir(dir: string): Promise<string[]> {
+	/* 	private static async createHashsFromDir(dir: string): Promise<string[]> {
 		const files = this.getFilesPath(dir).sort((a, b) => a.localeCompare(b));
 		return Promise.all(files.map((file) => this.hashFile(file)));
+	} */
+
+	private static async createHashsFromDir(dir: string): Promise<string[]> {
+		const files = this.getFilesPath(dir).sort((a, b) => a.localeCompare(b));
+
+		const hashAction = async (filePath: string) => {
+			return this.hashFile(filePath);
+		};
+
+		const asyncBatch = AsyncBatch.create<string, Promise<string>>(files, hashAction, {
+			maxConcurrency: 4
+		});
+
+		const hashes: string[] = [];
+
+		asyncBatch.events.onProcessingEnd(({ response }) => {
+			if (response) {
+				// @ts-ignore
+				hashes.push(response);
+			}
+		});
+
+		asyncBatch.start();
+
+		return hashes;
 	}
 
 	private static async hashFile(filePath: string): Promise<string> {

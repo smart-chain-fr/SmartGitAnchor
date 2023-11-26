@@ -27,6 +27,7 @@
     "@types/node": "^20.9.4"
   },
   "dependencies": {
+    "@smart-chain-fr/asyncbatch": "^1.0.2",
     "node-fetch": "^3.3.2"
   }
 }
