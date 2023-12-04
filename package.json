@@ -1,6 +1,6 @@
 {
   "name": "@smart-chain-fr/smartgitanchor",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "SmartGitAnchor is a versatile Node.js package designed for computing and securely transmitting file hashes.",
   "main": "index.js",
   "type": "module",
@@ -15,8 +15,8 @@
     "start": "node dist/index.js"
   },
   "files": [
-		"dist/**/*"
-	],
+    "dist/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/smart-chain-fr/SmartGitAnchor.git"
@@ -36,6 +36,7 @@
   "dependencies": {
     "@smart-chain-fr/asyncbatch": "^1.1.6",
     "node-fetch": "^3.3.2",
-    "prettier": "^3.1.0"
+    "prettier": "^3.1.0",
+    "tslib": "^2.6.2"
   }
 }
