@@ -6,8 +6,11 @@
   "type": "module",
   "outdir": "./dist",
   "scripts": {
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\"",
     "start": "node dist/index.js"
   },
   "repository": {
@@ -28,6 +31,7 @@
   },
   "dependencies": {
     "@smart-chain-fr/asyncbatch": "^1.1.6",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "prettier": "^3.1.0"
   }
 }
