@@ -22,6 +22,7 @@ class Main {
 	}
 
 	private static async requestAnchoring(hashSources: string[], configs: IConfig): Promise<unknown> {
+		hashSources.sort((a, b) => a.localeCompare(b));
 		return (
 			await fetch(configs.secureApi, {
 				method: "POST",
