@@ -1,42 +1,47 @@
 {
-  "name": "@smart-chain-fr/smartgitanchor",
-  "version": "1.0.8",
-  "description": "SmartGitAnchor is a versatile Node.js package designed for computing and securely transmitting file hashes.",
-  "main": "index.js",
-  "type": "module",
-  "outdir": "./dist",
-  "types": "./dist/index.d.ts",
-  "scripts": {
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "format": "prettier --write \"src/**/*.ts\"",
-    "start": "node dist/index.js"
-  },
-  "files": [
-    "dist/**/*"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/smart-chain-fr/SmartGitAnchor.git"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
-  "author": "Team smart-chain",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/smart-chain-fr/SmartGitAnchor/issues"
-  },
-  "homepage": "https://github.com/smart-chain-fr/SmartGitAnchor#readme",
-  "devDependencies": {
-    "@types/node": "^20.9.4"
-  },
-  "dependencies": {
-    "@smart-chain-fr/asyncbatch": "^1.1.6",
-    "node-fetch": "^3.3.2",
-    "prettier": "^3.1.0",
-    "tslib": "^2.6.2"
-  }
+	"name": "@smart-chain-fr/smartgitanchor",
+	"version": "1.0.9",
+	"description": "SmartGitAnchor is a versatile Node.js package designed for computing and securely transmitting file hashes.",
+	"main": "index.js",
+	"type": "module",
+	"outdir": "./dist",
+	"types": "./dist/index.d.ts",
+	"scripts": {
+		"prepare": "npm run build",
+		"prepublishOnly": "npm run build",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "tsc",
+		"format": "prettier --write \"src/**/*.ts\"",
+		"start": "node dist/index.js"
+	},
+	"files": [
+		"dist/**/*"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/smart-chain-fr/SmartGitAnchor.git"
+	},
+	"publishConfig": {
+		"registry": "https://registry.npmjs.org/"
+	},
+	"author": "Team smart-chain",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/smart-chain-fr/SmartGitAnchor/issues"
+	},
+	"homepage": "https://github.com/smart-chain-fr/SmartGitAnchor#readme",
+	"devDependencies": {
+		"@types/node": "^20.9.4",
+		"@types/yargs": "^17.0.32"
+	},
+	"dependencies": {
+		"@smart-chain-fr/asyncbatch": "^1.1.6",
+		"node-fetch": "^3.3.2",
+		"prettier": "^3.1.0",
+		"tslib": "^2.6.2",
+		"yargs": "^17.7.2"
+	},
+	"bin": {
+		"smartgitanchor": "./dist/bin.js"
+	}
 }

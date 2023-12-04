@@ -2,7 +2,6 @@ import * as fs from "fs";
 import * as crypto from "crypto";
 import fetch from "node-fetch";
 import * as path from "path";
-import assert from "assert";
 import asyncBatchModule from "@smart-chain-fr/asyncbatch";
 
 const AsyncBatch = asyncBatchModule.AsyncBatch;
@@ -14,10 +13,9 @@ type IConfig = {
 	rootDir: string;
 };
 
-class Main {
+export default class Main {
 	public static async run(configs: IConfig): Promise<void> {
 		try {
-			console.log("Configs:", configs);
 			console.log("Response from API:", await this.requestAnchoring(await this.createHashsFromDir(configs.rootDir), configs));
 		} catch (error) {
 			console.error("Error:", error);
@@ -103,13 +101,3 @@ class Main {
 		return files;
 	}
 }
-
-assert(process.env.SECURE_API, "Environment variable SECURE_API is not set");
-assert(process.env.API_KEY, "Environment variable API_KEY is not set");
-
-Main.run({
-	callbackUrl: process.env.CALLBACK_URL,
-	secureApi: process.env.SECURE_API,
-	apiKey: process.env.API_KEY,
-	rootDir: process.env.FILES_PATH ?? "./",
-});
