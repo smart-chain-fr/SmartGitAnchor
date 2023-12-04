@@ -1,7 +1,7 @@
-# FileHashDispatcher
+# SmartGitAnchor
 
 ## Overview
-`FileHashDispatcher` is a Node.js package designed for the automated computation and secure transmission of file hashes. It is ideal for integrating into CI/CD pipelines, where ensuring the integrity of files in a repository is crucial. The package generates SHA-256 hashes for files and sends these hashes to a specified API endpoint.
+`SmartGitAnchor` is a Node.js package designed for the automated computation and secure transmission of file hashes. It is ideal for integrating into CI/CD pipelines, where ensuring the integrity of files in a repository is crucial. The package generates SHA-256 hashes for files and sends these hashes to a specified API endpoint.
 
 ## How It Works
 This package works by scanning all files within a specified directory, computing their SHA-256 hashes, and then sending these hashes in a JSON payload to a designated secure API endpoint. It leverages environment variables for configuration, ensuring flexibility and ease of integration into various workflows.
@@ -14,10 +14,10 @@ This package works by scanning all files within a specified directory, computing
 - A secure API endpoint that will receive the file hashes
 
 ### Installation
-Install `FileHashDispatcher` via npm with the following command:
+Install `SmartGitAnchor` via npm with the following command:
 
 ```bash
-npm install @smart-chain-fr/filehashdispatcher
+npm install @smart-chain-fr/SmartGitAnchor
 ```
 
 ## GitHub Actions Workflow Setup
@@ -25,10 +25,10 @@ The following steps will guide you through the process of setting up a GitHub Ac
 
 ### Step 1: Create a GitHub Actions Workflow
 
-To utilize FileHashDispatcher within your GitHub Actions workflow, follow these steps to set up the .github/workflows YAML file in your project. this is an example of a workflow that will compute and send file hashes to an API endpoint when a push event occurs:
+To utilize SmartGitAnchor within your GitHub Actions workflow, follow these steps to set up the .github/workflows YAML file in your project. this is an example of a workflow that will compute and send file hashes to an API endpoint when a push event occurs:
 
 ```yaml
-name: FileHashDispatcher CI
+name: SmartGitAnchor CI
 on: [push]
 jobs:
   send-hashes:
@@ -42,8 +42,8 @@ jobs:
         with:
           node-version: "14"
 
-      - name: Install FileHashDispatcher
-        run: npm install @smart-chain-fr/filehashdispatcher
+      - name: Install SmartGitAnchor
+        run: npm install @smart-chain-fr/SmartGitAnchor
 
       - name: Install app dependencies
         run: npm install
