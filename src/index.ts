@@ -22,6 +22,8 @@ class Main {
 	}
 
 	private static async requestAnchoring(hashSources: string[], configs: IConfig): Promise<unknown> {
+		console.log("Hashs to anchor before sorting:", hashSources);
+		// sort hashSources by ascending order
 		hashSources.sort((a, b) => a.localeCompare(b));
 		return (
 			await fetch(configs.secureApi, {
@@ -68,8 +70,6 @@ class Main {
 		});
 
 		asyncBatch.start();
-
-		hashes.sort((a, b) => a.localeCompare(b));
 
 		return hashes;
 	}
