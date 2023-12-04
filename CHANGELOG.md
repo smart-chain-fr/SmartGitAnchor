@@ -9,4 +9,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.1] - 2023-12-04
 ### Added
-- Initial release of the library smartGitAnchor 1.0.1.
+- Initial release of the library SmartGitAnchor 1.0.1.

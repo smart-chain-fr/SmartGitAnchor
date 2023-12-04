@@ -1,7 +1,7 @@
 {
-  "name": "@smart-chain-fr/filehashdispatcher",
+  "name": "@smart-chain-fr/smartgitanchor",
   "version": "1.0.1",
-  "description": "FileHashDispatcher is a versatile Node.js package designed for computing and securely transmitting file hashes.",
+  "description": "SmartGitAnchor is a versatile Node.js package designed for computing and securely transmitting file hashes.",
   "main": "index.js",
   "type": "module",
   "outdir": "./dist",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/smart-chain-fr/FileHashDispatcher.git"
+    "url": "git+https://github.com/smart-chain-fr/SmartGitAnchor.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
@@ -20,9 +20,9 @@
   "author": "Team smart-chain",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/smart-chain-fr/FileHashDispatcher/issues"
+    "url": "https://github.com/smart-chain-fr/SmartGitAnchor/issues"
   },
-  "homepage": "https://github.com/smart-chain-fr/FileHashDispatcher#readme",
+  "homepage": "https://github.com/smart-chain-fr/SmartGitAnchor#readme",
   "devDependencies": {
     "@types/node": "^20.9.4"
   },
