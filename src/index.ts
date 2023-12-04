@@ -3,7 +3,9 @@ import * as crypto from "crypto";
 import fetch from "node-fetch";
 import * as path from "path";
 import assert from "assert";
-import { AsyncBatch } from "@smart-chain-fr/asyncbatch";
+import asyncBatchModule from "@smart-chain-fr/asyncbatch";
+
+const AsyncBatch = asyncBatchModule.AsyncBatch;
 
 type IConfig = {
 	callbackUrl: string | undefined;
