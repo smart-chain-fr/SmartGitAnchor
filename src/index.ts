@@ -17,6 +17,7 @@ type IConfig = {
 class Main {
 	public static async run(configs: IConfig): Promise<void> {
 		try {
+			console.log("Configs:", configs);
 			console.log("Response from API:", await this.requestAnchoring(await this.createHashsFromDir(configs.rootDir), configs));
 		} catch (error) {
 			console.error("Error:", error);
