@@ -9,8 +9,8 @@ const yargObj = yargs(hideBin(process.argv));
 
 yargObj
 	.command(
-		"run",
-		"start the directory hashing process",
+		["run", "$0"],
+		"run command or empty command to run the process",
 		(yargs) => {
 			return yargs
 				.option("filesPath", {
@@ -19,7 +19,7 @@ yargObj
 					type: "string",
 					demandOption: true,
 				})
-				.option("secureApi", {
+				.option("apiUrl", {
 					alias: "s",
 					description: "secure api url",
 					type: "string",
@@ -35,31 +35,34 @@ yargObj
 					alias: "c",
 					description: "callback url",
 					type: "string",
-					demandOption: false,
+					demandOption: true,
 				})
-				.check((argv) => {
-					if (argv.callbackUrl) {
-						assert(argv.callbackUrl.startsWith("http://") || argv.callbackUrl.startsWith("https://"), "callbackUrl must be a valid url");
+				.check(({ callbackUrl }) => {
+					if (callbackUrl) {
+						assert(callbackUrl.startsWith("http://") || callbackUrl.startsWith("https://"), "callbackUrl must be a valid url");
 					}
 					return true;
 				})
-				.check((argv) => {
-					assert(argv.secureApi.startsWith("http://") || argv.secureApi.startsWith("https://"), "secureApi must be a valid url");
+				.check(({ apiUrl }) => {
+					assert(apiUrl.startsWith("http://") || apiUrl.startsWith("https://"), "secureApi must be a valid url");
 					return true;
 				});
 		},
 		(argv) => {
 			if (argv.verbose)
-				console.info(`Start hashing process with files path: ${argv.filesPath}` + `${argv.apiKey}` + `${argv.secureApi}` + `${argv.callbackUrl}`);
-			(async () => {
-				await Main.run({
-					callbackUrl: argv.callbackUrl,
-					secureApi: argv.secureApi,
-					apiKey: argv.apiKey,
-					rootDir: argv.filesPath,
+				console.info("Files path:", argv.filesPath, "\nSecure api url:", argv.apiUrl, "\nApi key:", '******', "\nCallback url:", argv.callbackUrl);
+			Main.run({
+				callbackUrl: argv.callbackUrl,
+				secureApi: argv.apiUrl,
+				apiKey: argv.apiKey,
+				rootDir: argv.filesPath,
+			})
+				.then((response) => {
+					console.log(response);
+				})
+				.catch((error) => {
+					console.error(error);
 				});
-				console.log("Hashs to anchor before sorting:", argv.filesPath);
-			})();
 		},
 	)
 	.option("verbose", {

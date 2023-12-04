@@ -14,20 +14,14 @@ type IConfig = {
 };
 
 export default class Main {
-	public static async run(configs: IConfig): Promise<void> {
-		try {
-			console.log("Response from API:", await this.requestAnchoring(await this.createHashsFromDir(configs.rootDir), configs));
-		} catch (error) {
-			console.error("Error:", error);
-		}
+	public static async run(configs: IConfig) {
+		return this.requestAnchoring(await this.createHashsFromDir(configs.rootDir), configs);
 	}
 
 	private static async requestAnchoring(hashSources: string[], configs: IConfig): Promise<unknown> {
-		console.log("Hashs to anchor before sorting:", hashSources);
-		// sort hashSources by ascending order
 		hashSources.sort((a, b) => a.localeCompare(b));
 		return (
-			await fetch(configs.secureApi, {
+			await fetch(configs.secureApi.concat("/v2/anchor"), {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -52,27 +46,31 @@ export default class Main {
 	}
 
 	private static async createHashsFromDir(dir: string): Promise<string[]> {
-		const files = this.getFilesPath(dir);
+		return new Promise((resolve, reject) => {
+			const files = this.getFilesPath(dir);
+			const hashes: string[] = [];
 
-		const hashAction = async (filePath: string) => {
-			return this.hashFile(filePath);
-		};
+			const hashAction = (filePath: string) => {
+				return this.hashFile(filePath);
+			};
 
-		const asyncBatch = AsyncBatch.create<string, Promise<string>>(files, hashAction, {
-			maxConcurrency: 4,
+			const asyncBatch = AsyncBatch.create<string, Promise<string>>(files, hashAction, {
+				autoStart: true,
+				maxConcurrency: 4,
+			});
+
+			asyncBatch.events.onProcessingSuccess((event) => {
+				hashes.push(event.response);
+			});
+			asyncBatch.events.onWaitingNewDatas(async () => {
+				resolve(hashes);
+			});
+			asyncBatch.events.onProcessingError((event) => {
+				console.error("Error:", event);
+				asyncBatch.stop();
+				reject(event);
+			});
 		});
-
-		const hashes: string[] = [];
-
-		asyncBatch.events.onProcessingEnd(({ response }) => {
-			if (response) {
-				hashes.push(response);
-			}
-		});
-
-		asyncBatch.start();
-
-		return hashes;
 	}
 
 	private static async hashFile(filePath: string): Promise<string> {
