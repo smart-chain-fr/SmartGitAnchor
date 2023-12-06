@@ -11,7 +11,7 @@ This package works by scanning all files within a specified directory, computing
 ### Prerequisites
 - Node.js (version 14 or higher is recommended)
 - A GitHub repository where the package will be implemented
-- A secure API endpoint that will receive the file hashes
+- A secure API endpoint that will receive the file hashes (see [Secure API Endpoint Setup](#secure-api-endpoint-setup))
 
 ### Installation
 Install `SmartGitAnchor` via npm with the following command:
@@ -40,21 +40,13 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: "20"
 
       - name: Install SmartGitAnchor
-        run: npm install @smart-chain-fr/SmartGitAnchor
-
-      - name: Install app dependencies
-        run: npm install
+        run: npm install @smart-chain-fr/smartgitanchor -g
 
       - name: Compute hashes and send to API
-        env:
-          CALLBACK_URL: ${{ secrets.CALLBACK_URL }}
-          SECURE_API: ${{ secrets.SECURE_API }}
-          API_KEY: ${{ secrets.API_KEY }}
-          FILES_PATH: ${{ secrets.FILES_PATH }}
-        run: node dist/index.js
+        run: smartgitanchor --callbackUrl=${{ secrets.CALLBACK_URL }} --secureApi=${{ secrets.SECURE_API }} --apiKey=${{ secrets.API_KEY }} --filesPath=${{ secrets.FILES_PATH }}
 ```
 
 ### Step 2: Create Secrets
@@ -69,6 +61,29 @@ set the following secrets in your GitHub repository:
 ### Step 3: Usage
 
 Once the workflow is set up, the hashes of the files in the specified directory will be computed and sent to the API endpoint. The API endpoint will then respond with a JSON payload containing the hashes of the files. If a callback URL is specified, the response from the API endpoint will be sent to the callback URL.
+
+### Secure API Endpoint Setup
+
+Secure API, part of the [Bloom](https://3loom.io/) suite, that allows you to receive the hashes of the files sent by SmartGitAnchor. To use it, you must contact the smartchain team to create an account and get your API key and the URL of your API endpoint. You can contact the team at [Contact](https://www.smart-chain.fr/contact) and specify that you want to use the Secure API service.
+
+## Command Line Interface (CLI) Usage
+
+### Usage
+
+```bash
+smartgitanchor [options]
+```
+options:
+- `--callbackUrl`: The URL callback that will be used to send the response from the API endpoint
+- `--secureApi`: The URL of the API endpoint that will receive the file hashes (required)
+- `--apiKey`: The API key that will be used to authenticate the request to the API endpoint (required)
+- `--filesPath`: The path to the directory containing the files whose hashes will be computed (required)
+
+### Example
+
+```bash
+smartgitanchor --callbackUrl=https://example.com/callback --secureApi=https://example.com/api --apiKey=1234567890 --filesPath=/home/user/my-project
+```
 
 ## GitLab CI/CD Pipeline Setup (Coming Soon)
 
