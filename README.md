@@ -46,7 +46,7 @@ jobs:
         run: npm install @smart-chain-fr/smartgitanchor -g
 
       - name: Compute hashes and send to API
-        run: smartgitanchor --callbackUrl=${{ secrets.CALLBACK_URL }} --secureApi=${{ secrets.SECURE_API }} --apiKey=${{ secrets.API_KEY }} --filesPath=${{ secrets.FILES_PATH }}
+        run: smartgitanchor --callbackUrl=${{ secrets.CALLBACK_URL }} --apiUrl=${{ secrets.SECURE_API }} --apiKey=${{ secrets.API_KEY }} --filesPath=${{ secrets.FILES_PATH }}
 ```
 
 ### Step 2: Create Secrets
