@@ -1,7 +1,7 @@
 {
 	"name": "@smart-chain-fr/smartgitanchor",
-	"version": "1.1.2",
-	"description": "SmartGitAnchor is a versatile Node.js package designed for computing and securely transmitting file hashes.",
+	"version": "1.1.3",
+	"description": "SmartGitAnchor is a versatile Node.js package designed for computing and securely transmitting file hashes. It is used to anchor files on the Tezos or Ethereum blockchains.",
 	"main": "index.js",
 	"type": "module",
 	"outdir": "./dist",

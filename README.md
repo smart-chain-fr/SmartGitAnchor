@@ -1,7 +1,7 @@
 # SmartGitAnchor
 
 ## Overview
-`SmartGitAnchor` is a Node.js package designed for the automated computation and secure transmission of file hashes. It is ideal for integrating into CI/CD pipelines, where ensuring the integrity of files in a repository is crucial. The package generates SHA-256 hashes for files and sends these hashes to a specified API endpoint.
+`SmartGitAnchor` is a Node.js package designed for automated computation and secure transmission of file hashes, with a particular focus on blockchain technologies like `Tezos` and `Ethereum`. It's ideal for CI/CD pipelines, especially in blockchain development projects, where verifying the integrity of files against a `Merkle tree` generated hash root is crucial. The package generates SHA-256 hashes, a standard in blockchain hash functions, for files and securely transmits these to a specified API endpoint.
 
 ## How It Works
 This package works by scanning all files within a specified directory, computing their SHA-256 hashes, and then sending these hashes in a JSON payload to a designated secure API endpoint. It leverages environment variables for configuration, ensuring flexibility and ease of integration into various workflows.
@@ -13,17 +13,14 @@ This package works by scanning all files within a specified directory, computing
 - A GitHub repository where the package will be implemented
 - A secure API endpoint that will receive the file hashes (see [Secure API Endpoint Setup](#secure-api-endpoint-setup))
 
-### Installation
+## Installation and Setup (GitHub Actions Workflow)
 Install `SmartGitAnchor` via npm with the following command:
 
 ```bash
 npm install @smart-chain-fr/SmartGitAnchor
 ```
 
-## GitHub Actions Workflow Setup
-The following steps will guide you through the process of setting up a GitHub Actions workflow that will automatically compute and send file hashes to an API endpoint.
-
-### Step 1: Create a GitHub Actions Workflow
+### Create a GitHub Actions Workflow
 
 To utilize SmartGitAnchor within your GitHub Actions workflow, follow these steps to set up the .github/workflows YAML file in your project. this is an example of a workflow that will compute and send file hashes to an API endpoint when a push event occurs:
 
@@ -49,7 +46,7 @@ jobs:
         run: smartgitanchor --callbackUrl=${{ secrets.CALLBACK_URL }} --apiUrl=${{ secrets.SECURE_API }} --apiKey=${{ secrets.API_KEY }} --filesPath=${{ secrets.FILES_PATH }}
 ```
 
-### Step 2: Create Secrets
+### Create Secrets
 
 set the following secrets in your GitHub repository:
 
@@ -58,7 +55,7 @@ set the following secrets in your GitHub repository:
 - `FILES_PATH`: The path to the directory containing the files whose hashes will be computed
 - `CALLBACK_URL`(optional): The URL callback that will be used to send the response from the API endpoint
 
-### Step 3: Usage
+### Workflow Explanation
 
 Once the workflow is set up, the hashes of the files in the specified directory will be computed and sent to the API endpoint. The API endpoint will then respond with a JSON payload containing the hashes of the files. If a callback URL is specified, the response from the API endpoint will be sent to the callback URL.
 
@@ -68,6 +65,12 @@ Secure API, part of the [Bloom](https://3loom.io/) suite, that allows you to rec
 
 ## Command Line Interface (CLI) Usage
 
+### installation
+
+```bash
+npm install @smart-chain-fr/smartgitanchor -g
+```
+
 ### Usage
 
 ```bash
@@ -75,14 +78,14 @@ smartgitanchor [options]
 ```
 options:
 - `--callbackUrl`: The URL callback that will be used to send the response from the API endpoint
-- `--secureApi`: The URL of the API endpoint that will receive the file hashes (required)
+- `--apiUrl`: The URL of the API endpoint that will receive the file hashes (required)
 - `--apiKey`: The API key that will be used to authenticate the request to the API endpoint (required)
 - `--filesPath`: The path to the directory containing the files whose hashes will be computed (required)
 
 ### Example
 
 ```bash
-smartgitanchor --callbackUrl=https://example.com/callback --secureApi=https://example.com/api --apiKey=1234567890 --filesPath=/home/user/my-project
+smartgitanchor --callbackUrl=https://example.com/callback --apiUrl=https://example.com/api --apiKey=1234567890 --filesPath=/home/user/my-project
 ```
 
 ## GitLab CI/CD Pipeline Setup (Coming Soon)
